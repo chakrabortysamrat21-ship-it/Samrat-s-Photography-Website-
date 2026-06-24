@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Shot on Film — New Zealand</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Space+Mono:ital@0;1&display=swap" rel="stylesheet" />
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --navy:    #080c18;
+      --navy-2:  #0b1220;
+      --cream:   #ede8df;
+      --warm:    #c9a87c;
+      --teal:    #7ec8c8;
+      --muted:   #8a8fa8;
+      --grain-o: 0.55;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--navy);
+      color: var(--cream);
+      font-family: 'Space Mono', monospace;
+      overflow-x: hidden;
+    }
+
+    /* grain overlay */
+    body::before {
+      content: '';
+      position: fixed; inset: 0; z-index: 1000;
+      pointer-events: none;
+      opacity: var(--grain-o);
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.18'/%3E%3C/svg%3E");
+      background-size: 200px 200px;
+      mix-blend-mode: overlay;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 500;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 1.4rem 3rem;
+      background: linear-gradient(to bottom, rgba(8,12,24,0.92) 0%, transparent 100%);
+    }
+    .nav-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1rem; letter-spacing: 0.2em;
+      color: var(--cream); text-decoration: none;
+    }
+    .nav-links { display: flex; gap: 2.5rem; list-style: none; align-items: center; }
+    .nav-links a {
+      font-size: 0.6rem; letter-spacing: 0.25em; text-transform: uppercase;
+      color: var(--muted); text-decoration: none;
+      transition: color 0.3s;
+    }
+    .nav-links a:hover { color: var(--teal); }
+    .nav-back {
+      font-size: 0.55rem; letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--warm); text-decoration: none;
+      border: 1px solid rgba(201,168,124,0.25);
+      padding: 0.4rem 0.9rem;
+      transition: border-color 0.3s, color 0.3s;
+    }
+    .nav-back:hover { color: var(--warm); border-color: var(--warm); }
+
+    /* ── HERO ── */
+    #home {
+      min-height: 100vh;
+      display: flex; flex-direction: column; justify-content: flex-end;
+      padding: 5rem 3rem 4rem;
+      position: relative;
+      overflow: hidden;
+      background: radial-gradient(ellipse at 20% 70%, #0d2035 0%, #080c18 65%);
+    }
+
+    /* NZ-specific hero tints: glacier teal + deep mountain indigo */
+    #home::after {
+      content: '';
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse at 75% 15%, rgba(126,200,200,0.08) 0%, transparent 50%),
+        radial-gradient(ellipse at 5% 85%,  rgba(20,80,140,0.22)  0%, transparent 55%);
+      pointer-events: none;
+    }
+
+    /* NZ mountain silhouette */
+    #home::before {
+      content: '';
+      position: absolute; bottom: 0; left: 0; right: 0;
+      height: 45%;
+      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 260' preserveAspectRatio='none'%3E%3Cpath fill='rgba(8,12,24,0.55)' d='M0,260 L0,200 L80,170 L160,140 L220,110 L280,80 L340,100 L400,60 L460,90 L520,55 L580,80 L640,45 L700,70 L760,40 L820,65 L880,50 L940,75 L1000,55 L1060,80 L1120,110 L1180,90 L1260,130 L1360,160 L1440,180 L1440,260 Z'/%3E%3C/svg%3E") bottom / 100% auto no-repeat;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .hero-content { position: relative; z-index: 1; }
+
+    .hero-eyebrow {
+      font-size: 0.58rem; letter-spacing: 0.35em; text-transform: uppercase;
+      color: var(--teal); margin-bottom: 1.2rem;
+    }
+    .hero-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(3.5rem, 9vw, 8rem);
+      font-weight: 300; line-height: 0.92;
+      color: var(--cream);
+    }
+    .hero-title em { font-style: italic; color: var(--teal); }
+    .hero-sub {
+      margin-top: 2rem;
+      font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--muted); max-width: 44ch; line-height: 2;
+    }
+
+    .hero-scroll {
+      position: absolute; right: 3rem; bottom: 4rem;
+      display: flex; flex-direction: column; align-items: center; gap: 0.7rem;
+      font-size: 0.5rem; letter-spacing: 0.3em; text-transform: uppercase;
+      color: var(--muted);
+    }
+    .hero-scroll-line {
+      width: 1px; height: 60px;
+      background: linear-gradient(to bottom, var(--teal), transparent);
+      animation: scrollpulse 2s ease-in-out infinite;
+    }
+    @keyframes scrollpulse {
+      0%, 100% { opacity: 0.3; transform: scaleY(1); }
+      50%       { opacity: 1;   transform: scaleY(1.15); }
+    }
+
+    .film-badge {
+      position: absolute; top: 7rem; right: 3rem; z-index: 1;
+      font-size: 0.55rem; letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--muted); text-align: right;
+    }
+    .film-badge strong {
+      display: block; font-family: 'Cormorant Garamond', serif;
+      font-size: 2.8rem; font-weight: 300; color: rgba(126,200,200,0.15);
+      line-height: 1; letter-spacing: -0.02em;
+    }
+
+    /* ── JOURNEY STRIP ── */
+    .journey-strip {
+      background: rgba(13,18,32,0.9);
+      border-top: 1px solid rgba(126,200,200,0.1);
+      border-bottom: 1px solid rgba(126,200,200,0.1);
+      padding: 1.4rem 3rem;
+      display: flex; gap: 3rem; align-items: center;
+      overflow-x: auto; white-space: nowrap;
+    }
+    .journey-stop {
+      display: flex; align-items: center; gap: 1rem;
+      font-size: 0.55rem; letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--muted);
+    }
+    .journey-stop .dot {
+      width: 5px; height: 5px; border-radius: 50%;
+      background: var(--teal); flex-shrink: 0;
+    }
+    .journey-stop span { color: var(--cream); }
+    .journey-line {
+      width: 40px; height: 1px;
+      background: linear-gradient(90deg, var(--teal), transparent);
+      flex-shrink: 0;
+    }
+
+    /* ── SECTIONS ── */
+    section { padding: 6rem 3rem; }
+
+    .section-label {
+      font-size: 0.55rem; letter-spacing: 0.35em; text-transform: uppercase;
+      color: var(--teal); margin-bottom: 3.5rem;
+      display: flex; align-items: center; gap: 1rem;
+    }
+    .section-label::after {
+      content: ''; flex: 1; max-width: 80px; height: 1px;
+      background: var(--teal); opacity: 0.35;
+    }
+
+    /* ── GALLERY ── */
+    #gallery { background: var(--navy-2); }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      grid-auto-rows: 260px;
+      gap: 12px;
+    }
+
+    /* 9-image mosaic — Milford Sound anchors as hero frame */
+    .g1  { grid-column: 1 / 6;  grid-row: 1 / 3; }  /* Milford Sound — tall hero */
+    .g2  { grid-column: 6 / 9;  grid-row: 1 / 2; }  /* Lake Pukaki */
+    .g3  { grid-column: 9 / 13; grid-row: 1 / 2; }  /* Lake Tekapo */
+    .g4  { grid-column: 6 / 10; grid-row: 2 / 3; }  /* Lake Wakatipu */
+    .g5  { grid-column: 10 / 13;grid-row: 2 / 3; }  /* Queenstown street */
+    .g6  { grid-column: 1 / 5;  grid-row: 3 / 4; }  /* Lake with boat */
+    .g7  { grid-column: 5 / 9;  grid-row: 3 / 4; }  /* West Coast road */
+    .g8  { grid-column: 9 / 13; grid-row: 3 / 4; }  /* Canterbury Plains */
+    .g9  { grid-column: 1 / 13; grid-row: 4 / 5; height: 300px; }  /* Otago valley — full-width panorama */
+
+    .photo-card {
+      position: relative; overflow: hidden;
+      cursor: pointer;
+      background: #0d1628;
+      border-radius: 2px;
+    }
+    .photo-card img {
+      width: 100%; height: 100%; object-fit: cover;
+      display: block;
+      transition: transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                  filter 0.5s ease;
+      filter: saturate(0.85) brightness(0.9);
+    }
+
+    /* per-card grain */
+    .photo-card::before {
+      content: '';
+      position: absolute; inset: 0; z-index: 2; pointer-events: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.12'/%3E%3C/svg%3E");
+      background-size: 150px 150px;
+      mix-blend-mode: screen; opacity: 0.6;
+    }
+
+    /* vignette */
+    .photo-card::after {
+      content: ''; position: absolute; inset: 0; z-index: 3; pointer-events: none;
+      background: radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,0.5) 100%);
+      transition: opacity 0.5s;
+    }
+
+    .photo-meta {
+      position: absolute; bottom: 0; left: 0; right: 0; z-index: 4;
+      padding: 1.5rem 1.2rem 1.2rem;
+      background: linear-gradient(to top, rgba(8,12,24,0.88) 0%, transparent 100%);
+      transform: translateY(100%);
+      transition: transform 0.45s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+    .photo-meta .loc {
+      font-size: 0.52rem; letter-spacing: 0.25em; text-transform: uppercase;
+      color: var(--teal);
+    }
+    .photo-meta .caption {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.05rem; font-style: italic; font-weight: 300;
+      color: var(--cream); margin-top: 0.25rem;
+    }
+
+    .photo-card:hover img {
+      transform: scale(1.07);
+      filter: saturate(1.15) brightness(1.0);
+    }
+    .photo-card:hover .photo-meta { transform: translateY(0); }
+    .photo-card:hover::after { opacity: 0.35; }
+
+    /* NZ light leak: cool glacier blue instead of warm amber */
+    .photo-card .light-leak {
+      position: absolute; inset: 0; z-index: 3; pointer-events: none;
+      background: radial-gradient(ellipse at 90% 5%, rgba(100,200,220,0.15) 0%, transparent 50%);
+      opacity: 0; transition: opacity 0.5s;
+    }
+    .photo-card:hover .light-leak { opacity: 1; }
+
+    /* ── LIGHTBOX ── */
+    #lightbox {
+      position: fixed; inset: 0; z-index: 9000;
+      background: rgba(4,7,16,0.97);
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.4s;
+    }
+    #lightbox.open { opacity: 1; pointer-events: all; }
+    #lightbox img {
+      max-width: 88vw; max-height: 88vh;
+      object-fit: contain;
+      border-radius: 2px;
+      box-shadow: 0 0 120px rgba(126,200,200,0.1);
+      transform: scale(0.94);
+      transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+    #lightbox.open img { transform: scale(1); }
+    #lb-close {
+      position: absolute; top: 2rem; right: 2.5rem;
+      font-size: 0.6rem; letter-spacing: 0.25em; text-transform: uppercase;
+      color: var(--muted); cursor: pointer; border: none; background: none;
+      font-family: 'Space Mono', monospace; transition: color 0.2s;
+    }
+    #lb-close:hover { color: var(--teal); }
+    #lb-meta {
+      position: absolute; bottom: 2.5rem; left: 50%; transform: translateX(-50%);
+      text-align: center; white-space: nowrap;
+    }
+    #lb-meta .loc { font-size: 0.52rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--teal); }
+    #lb-meta .cap { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 1rem; color: var(--cream); margin-top: 0.3rem; }
+    #lb-prev, #lb-next {
+      position: absolute; top: 50%; transform: translateY(-50%);
+      background: none; border: none; cursor: pointer;
+      color: var(--muted); font-size: 0.55rem; letter-spacing: 0.2em; text-transform: uppercase;
+      padding: 1rem; transition: color 0.2s;
+      font-family: 'Space Mono', monospace;
+    }
+    #lb-prev:hover, #lb-next:hover { color: var(--teal); }
+    #lb-prev { left: 2rem; }
+    #lb-next { right: 2rem; }
+
+    /* ── ABOUT ── */
+    #about { background: var(--navy); }
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+      align-items: start;
+    }
+    .about-inner { max-width: 540px; }
+    .about-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2.2rem, 4vw, 3.4rem);
+      font-weight: 300; line-height: 1.15; margin-bottom: 2rem;
+    }
+    .about-title em { font-style: italic; color: var(--teal); }
+    .about-body {
+      font-size: 0.65rem; line-height: 2.2; color: var(--muted);
+      letter-spacing: 0.04em;
+    }
+    .about-body p + p { margin-top: 1.2rem; }
+
+    /* route stats */
+    .route-stats {
+      display: flex; flex-direction: column; gap: 0;
+      border: 1px solid rgba(126,200,200,0.12);
+    }
+    .route-stat {
+      padding: 1.4rem 2rem;
+      border-bottom: 1px solid rgba(126,200,200,0.08);
+      display: flex; align-items: baseline; gap: 1.5rem;
+    }
+    .route-stat:last-child { border-bottom: none; }
+    .route-stat .num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2rem; font-weight: 300; color: rgba(126,200,200,0.4);
+      line-height: 1; flex-shrink: 0; min-width: 3.5rem;
+    }
+    .route-stat .label {
+      font-size: 0.58rem; letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--muted); line-height: 1.8;
+    }
+    .route-stat .label strong { display: block; color: var(--cream); margin-bottom: 0.15rem; }
+
+    .roll-list {
+      margin-top: 3rem; display: flex; flex-direction: column; gap: 1.2rem;
+    }
+    .roll-item {
+      display: flex; align-items: baseline; gap: 1.5rem;
+      font-size: 0.58rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted);
+      padding-bottom: 1.2rem; border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .roll-item .num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.4rem; font-weight: 300; color: rgba(126,200,200,0.3);
+      line-height: 1;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      padding: 3rem; border-top: 1px solid rgba(255,255,255,0.06);
+      display: flex; justify-content: space-between; align-items: center;
+      font-size: 0.52rem; letter-spacing: 0.2em; text-transform: uppercase;
+      color: rgba(138,143,168,0.45);
+      font-family: 'Space Mono', monospace;
+    }
+    footer a {
+      color: var(--teal); text-decoration: none; opacity: 0.7;
+      transition: opacity 0.2s;
+    }
+    footer a:hover { opacity: 1; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      nav { padding: 1.2rem 1.5rem; }
+      .nav-links { display: none; }
+      #home, section { padding-left: 1.5rem; padding-right: 1.5rem; }
+      .journey-strip { padding: 1rem 1.5rem; gap: 1.5rem; }
+      .grid {
+        grid-template-columns: 1fr 1fr;
+        grid-auto-rows: 200px;
+      }
+      .g1,.g2,.g3,.g4,.g5,.g6,.g7,.g8,.g9 {
+        grid-column: auto; grid-row: auto; height: auto;
+      }
+      .about-grid { grid-template-columns: 1fr; gap: 3rem; }
+      footer { flex-direction: column; gap: 1rem; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="index.html">35mm ✦</a>
+  <ul class="nav-links">
+    <li><a href="#gallery">Gallery</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="index.html" class="nav-back">← Australia</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="home">
+  <div class="film-badge">
+    <strong>09</strong>
+    frames
+  </div>
+
+  <div class="hero-content">
+    <p class="hero-eyebrow">Shot on disposable film &nbsp;·&nbsp; South Island, NZ</p>
+    <h1 class="hero-title">Aotearoa,<br>land of the<br><em>long white cloud.</em></h1>
+    <p class="hero-sub">
+      Christchurch &nbsp;·&nbsp; Lake Tekapo &nbsp;·&nbsp; Lake Pukaki &nbsp;·&nbsp; Milford Sound<br>
+      West Coast &nbsp;·&nbsp; Queenstown &nbsp;·&nbsp; Kodak 200 · One roll
+    </p>
+  </div>
+
+  <div class="hero-scroll">
+    <div class="hero-scroll-line"></div>
+    scroll
+  </div>
+</section>
+
+<!-- JOURNEY STRIP -->
+<div class="journey-strip">
+  <div class="journey-stop"><div class="dot"></div><span>Christchurch</span></div>
+  <div class="journey-line"></div>
+  <div class="journey-stop"><div class="dot"></div><span>Canterbury Plains</span></div>
+  <div class="journey-line"></div>
+  <div class="journey-stop"><div class="dot"></div><span>Lake Tekapo</span></div>
+  <div class="journey-line"></div>
+  <div class="journey-stop"><div class="dot"></div><span>Lake Pukaki · Mt Cook</span></div>
+  <div class="journey-line"></div>
+  <div class="journey-stop"><div class="dot"></div><span>West Coast</span></div>
+  <div class="journey-line"></div>
+  <div class="journey-stop"><div class="dot"></div><span>Milford Sound</span></div>
+  <div class="journey-line"></div>
+  <div class="journey-stop"><div class="dot"></div><span>Queenstown</span></div>
+  <div class="journey-line"></div>
+  <div class="journey-stop"><div class="dot"></div><span>Central Otago</span></div>
+</div>
+
+<!-- GALLERY -->
+<section id="gallery">
+  <p class="section-label">Roll 03 — South Island</p>
+
+  <div class="grid">
+
+    <!-- g1 — HERO frame: Milford Sound -->
+    <div class="photo-card g1"
+         data-loc="Milford Sound, Fiordland"
+         data-cap="On the water, walls of the fiord">
+      <img src="R1-00986-021A.JPG" alt="Milford Sound fiord" loading="lazy" />
+      <div class="light-leak"></div>
+      <div class="photo-meta">
+        <div class="loc">Milford Sound, Fiordland</div>
+        <div class="caption">On the water, walls of the fiord</div>
+      </div>
+    </div>
+
+    <!-- g2 — Lake Pukaki -->
+    <div class="photo-card g2"
+         data-loc="Lake Pukaki, Canterbury"
+         data-cap="Glacial blue, Aoraki in the distance">
+      <img src="R1-00986-002A.JPG" alt="Lake Pukaki with Mt Cook" loading="lazy" />
+      <div class="light-leak"></div>
+      <div class="photo-meta">
+        <div class="loc">Lake Pukaki, Canterbury</div>
+        <div class="caption">Glacial blue, Aoraki in the distance</div>
+      </div>
+    </div>
+
+    <!-- g3 — Lake Tekapo -->
+    <div class="photo-card g3"
+         data-loc="Lake Tekapo, Mackenzie Basin"
+         data-cap="Stone reflection, still morning">
+      <img src="R1-00986-007A.JPG" alt="Lake Tekapo" loading="lazy" />
+      <div class="light-leak"></div>
+      <div class="photo-meta">
+        <div class="loc">Lake Tekapo, Mackenzie Basin</div>
+        <div class="caption">Stone reflection, still morning</div>
+      </div>
+    </div>
+
+    <!-- g4 — Lake Wakatipu / Queenstown -->
+    <div class="photo-card g4"
+         data-loc="Lake Wakatipu, Queenstown"
+         data-cap="The Remarkables under cloud">
+      <img src="R1-00986-024A.JPG" alt="Lake Wakatipu Queenstown" loading="lazy" />
+      <div class="light-leak"></div>
+      <div class="photo-meta">
+        <div class="loc">Lake Wakatipu, Queenstown</div>
+        <div class="caption">The Remarkables under cloud</div>
+      </div>
+    </div>
+
+    <!-- g5 — Queenstown street -->
+    <div class="photo-card g5"
+         data-loc="Queenstown Town Centre"
+         data-cap="Mountain town, overcast afternoon">
+      <img src="R1-00986-025A.JPG" alt="Queenstown street" loading="lazy" />
+      <div class="light-leak"></div>
+      <div class="photo-meta">
+        <div class="loc">Queenstown Town Centre</div>
+        <div class="caption">Mountain town, overcast afternoon</div>
+      </div>
+    </div>
+
+    <!-- g6 — Lake Mavora / Te Anau -->
+    <div class="photo-card g6"
+         data-loc="Fiordland Lake"
+         data-cap="A lone boat on the still water">
+      <img src="R1-00986-023A.JPG" alt="Lake with boat and mountains" loading="lazy" />
+      <div class="light-leak"></div>
+      <div class="photo-meta">
+        <div class="loc">Fiordland Lake</div>
+        <div class="caption">A lone boat on the still water</div>
+      </div>
+    </div>
+
+    <!-- g7 — West Coast road -->
+    <div class="photo-card g7"
+         data-loc="West Coast, South Island"
+         data-cap="Highway 6 — sea on the left, bush on the right">
+      <img src="R1-00986-015A.JPG" alt="West Coast road and seawall" loading="lazy" />
+      <div class="light-leak"></div>
+      <div class="photo-meta">
+        <div class="loc">West Coast, South Island</div>
+        <div class="caption">Highway 6 — sea on the left, bush on the right</div>
+      </div>
+    </div>
+
+    <!-- g8 — Canterbury Plains -->
+    <div class="photo-card g8"
+         data-loc="Canterbury Plains"
+         data-cap="Flat land, Southern Alps on the horizon">
+      <img src="R1-00986-009A.JPG" alt="Canterbury Plains roadside" loading="lazy" />
+      <div class="light-leak"></div>
+      <div class="photo-meta">
+        <div class="loc">Canterbury Plains</div>
+        <div class="caption">Flat land, Southern Alps on the horizon</div>
+      </div>
+    </div>
+
+    <!-- g9 — Central Otago panorama (full-width) -->
+    <div class="photo-card g9"
+         data-loc="Central Otago"
+         data-cap="Valley panorama — tussock gold, river bend, mountain ring">
+      <img src="R1-00986-019A.JPG" alt="Central Otago valley panorama" loading="lazy"
+           style="object-position: center 40%;" />
+      <div class="light-leak"></div>
+      <div class="photo-meta">
+        <div class="loc">Central Otago</div>
+        <div class="caption">Valley panorama — tussock gold, river bend, mountain ring</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <p class="section-label">About the roll</p>
+  <div class="about-grid">
+
+    <div class="about-inner">
+      <h2 class="about-title">One roll.<br><em>The whole island.</em></h2>
+      <div class="about-body">
+        <p>One roll of Kodak 200 pressed into a disposable camera and carried across the South Island of New Zealand — no spare, no second chances.</p>
+        <p>From the flat Canterbury Plains to the walls of Milford Sound, every frame was a decision. The grain, the underexposed skies, the washed-out teal of the lakes — none of it was corrected. That's what the camera saw.</p>
+        <p>Aotearoa deserves more than a phone screen.</p>
+      </div>
+
+      <div class="roll-list">
+        <div class="roll-item"><span class="num">03</span> Roll three — South Island NZ · R1-00986</div>
+        <div class="roll-item"><span class="num">09</span> Frames selected from 27 exposures</div>
+        <div class="roll-item"><span class="num">~</span> Approx. 1,800 km driven across the island</div>
+      </div>
+    </div>
+
+    <div class="route-stats">
+      <div class="route-stat">
+        <span class="num">01</span>
+        <div class="label"><strong>Christchurch → Lake Tekapo</strong>Canterbury to the Mackenzie Basin</div>
+      </div>
+      <div class="route-stat">
+        <span class="num">02</span>
+        <div class="label"><strong>Lake Pukaki · Aoraki / Mt Cook</strong>Glacial flour, turquoise water</div>
+      </div>
+      <div class="route-stat">
+        <span class="num">03</span>
+        <div class="label"><strong>West Coast Highway 6</strong>Rainforest edge, Tasman Sea</div>
+      </div>
+      <div class="route-stat">
+        <span class="num">04</span>
+        <div class="label"><strong>Milford Sound</strong>Fiordland — by boat into the fiord</div>
+      </div>
+      <div class="route-stat">
+        <span class="num">05</span>
+        <div class="label"><strong>Queenstown · Central Otago</strong>The Remarkables, gold tussock valleys</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <span>© 2024 — Shot on disposable film · South Island, New Zealand</span>
+  <a href="index.html">← Back to Australia</a>
+</footer>
+
+<!-- LIGHTBOX -->
+<div id="lightbox">
+  <button id="lb-close">✕ &nbsp; Close</button>
+  <button id="lb-prev">← Prev</button>
+  <img id="lb-img" src="" alt="" />
+  <button id="lb-next">Next →</button>
+  <div id="lb-meta">
+    <div class="loc" id="lb-loc"></div>
+    <div class="cap" id="lb-cap"></div>
+  </div>
+</div>
+
+<script>
+  const cards = Array.from(document.querySelectorAll('.photo-card'));
+  const lb    = document.getElementById('lightbox');
+  const lbImg = document.getElementById('lb-img');
+  const lbLoc = document.getElementById('lb-loc');
+  const lbCap = document.getElementById('lb-cap');
+  let current = 0;
+
+  function openLightbox(idx) {
+    current = idx;
+    const card = cards[idx];
+    lbImg.src = card.querySelector('img').src;
+    lbLoc.textContent = card.dataset.loc;
+    lbCap.textContent = card.dataset.cap;
+    lb.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeLightbox() {
+    lb.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  cards.forEach((card, i) => card.addEventListener('click', () => openLightbox(i)));
+  document.getElementById('lb-close').addEventListener('click', closeLightbox);
+  lb.addEventListener('click', e => { if (e.target === lb) closeLightbox(); });
+
+  document.getElementById('lb-prev').addEventListener('click', e => {
+    e.stopPropagation();
+    openLightbox((current - 1 + cards.length) % cards.length);
+  });
+  document.getElementById('lb-next').addEventListener('click', e => {
+    e.stopPropagation();
+    openLightbox((current + 1) % cards.length);
+  });
+  document.addEventListener('keydown', e => {
+    if (!lb.classList.contains('open')) return;
+    if (e.key === 'Escape') closeLightbox();
+    if (e.key === 'ArrowLeft')  openLightbox((current - 1 + cards.length) % cards.length);
+    if (e.key === 'ArrowRight') openLightbox((current + 1) % cards.length);
+  });
+</script>
+
+</body>
+</html>
