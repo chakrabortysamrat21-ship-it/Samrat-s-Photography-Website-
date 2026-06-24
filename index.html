@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Shot on Film — Brisbane · Sydney · Gold Coast</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Space+Mono:ital@0;1&display=swap" rel="stylesheet" />
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --navy:    #080c18;
+      --navy-2:  #0d1428;
+      --cream:   #ede8df;
+      --warm:    #c9a87c;
+      --muted:   #8a8fa8;
+      --grain-o: 0.55;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--navy);
+      color: var(--cream);
+      font-family: 'Space Mono', monospace;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: '';
+      position: fixed; inset: 0; z-index: 1000;
+      pointer-events: none;
+      opacity: var(--grain-o);
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.18'/%3E%3C/svg%3E");
+      background-size: 200px 200px;
+      mix-blend-mode: overlay;
+    }
+
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 500;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 1.4rem 3rem;
+      background: linear-gradient(to bottom, rgba(8,12,24,0.9) 0%, transparent 100%);
+    }
+    .nav-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1rem; letter-spacing: 0.2em;
+      color: var(--cream); text-decoration: none;
+    }
+    .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+    .nav-links a {
+      font-size: 0.6rem; letter-spacing: 0.25em; text-transform: uppercase;
+      color: var(--muted); text-decoration: none;
+      transition: color 0.3s;
+    }
+    .nav-links a:hover { color: var(--warm); }
+
+    #home {
+      min-height: 100vh;
+      display: flex; flex-direction: column; justify-content: flex-end;
+      padding: 5rem 3rem 4rem;
+      position: relative;
+      background: radial-gradient(ellipse at 30% 60%, #1a2545 0%, #080c18 70%);
+      overflow: hidden;
+    }
+    #home::after {
+      content: '';
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse at 80% 20%, rgba(201,168,124,0.07) 0%, transparent 55%),
+        radial-gradient(ellipse at 10% 90%, rgba(30,60,120,0.25) 0%, transparent 50%);
+      pointer-events: none;
+    }
+
+    .hero-eyebrow {
+      font-size: 0.58rem; letter-spacing: 0.35em; text-transform: uppercase;
+      color: var(--warm); margin-bottom: 1.2rem;
+    }
+    .hero-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(3.5rem, 9vw, 8rem);
+      font-weight: 300; line-height: 0.92;
+      color: var(--cream);
+    }
+    .hero-title em { font-style: italic; color: var(--warm); }
+    .hero-sub {
+      margin-top: 2rem;
+      font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--muted); max-width: 36ch; line-height: 2;
+    }
+    .hero-scroll {
+      position: absolute; right: 3rem; bottom: 4rem;
+      display: flex; flex-direction: column; align-items: center; gap: 0.7rem;
+      font-size: 0.5rem; letter-spacing: 0.3em; text-transform: uppercase;
+      color: var(--muted);
+    }
+    .hero-scroll-line {
+      width: 1px; height: 60px;
+      background: linear-gradient(to bottom, var(--warm), transparent);
+      animation: scrollpulse 2s ease-in-out infinite;
+    }
+    @keyframes scrollpulse {
+      0%, 100% { opacity: 0.3; transform: scaleY(1); }
+      50%       { opacity: 1;   transform: scaleY(1.15); }
+    }
+
+    .film-badge {
+      position: absolute; top: 7rem; right: 3rem;
+      font-size: 0.55rem; letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--muted); text-align: right;
+    }
+    .film-badge strong {
+      display: block; font-family: 'Cormorant Garamond', serif;
+      font-size: 2.8rem; font-weight: 300; color: rgba(201,168,124,0.18);
+      line-height: 1; letter-spacing: -0.02em;
+    }
+
+    section { padding: 6rem 3rem; }
+    .section-label {
+      font-size: 0.55rem; letter-spacing: 0.35em; text-transform: uppercase;
+      color: var(--warm); margin-bottom: 3.5rem;
+      display: flex; align-items: center; gap: 1rem;
+    }
+    .section-label::after {
+      content: ''; flex: 1; max-width: 80px; height: 1px;
+      background: var(--warm); opacity: 0.35;
+    }
+
+    #gallery { background: var(--navy-2); }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      grid-auto-rows: 260px;
+      gap: 12px;
+    }
+
+    .g1  { grid-column: 1 / 6;  grid-row: 1 / 3; }
+    .g2  { grid-column: 6 / 9;  grid-row: 1 / 2; }
+    .g3  { grid-column: 9 / 13; grid-row: 1 / 2; }
+    .g4  { grid-column: 6 / 10; grid-row: 2 / 3; }
+    .g5  { grid-column: 10 / 13;grid-row: 2 / 3; }
+    .g6  { grid-column: 1 / 5;  grid-row: 3 / 4; }
+    .g7  { grid-column: 5 / 9;  grid-row: 3 / 4; }
+    .g8  { grid-column: 9 / 13; grid-row: 3 / 4; }
+    .g9  { grid-column: 1 / 5;  grid-row: 4 / 5; }
+    .g10 { grid-column: 5 / 9;  grid-row: 4 / 5; }
+    .g11 { grid-column: 9 / 13; grid-row: 4 / 5; }
+
+    .photo-card {
+      position: relative; overflow: hidden;
+      cursor: pointer;
+      background: #12172a;
+      border-radius: 2px;
+    }
+    .photo-card img {
+      width: 100%; height: 100%; object-fit: cover;
+      display: block;
+      transition: transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                  filter 0.5s ease;
+      filter: saturate(0.85) brightness(0.92);
+    }
+
+    .photo-card::before {
+      content: '';
+      position: absolute; inset: 0; z-index: 2; pointer-events: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.12'/%3E%3C/svg%3E");
+      background-size: 150px 150px;
+      mix-blend-mode: screen; opacity: 0.6;
+    }
+
+    .photo-card::after {
+      content: ''; position: absolute; inset: 0; z-index: 3; pointer-events: none;
+      background: radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,0.55) 100%);
+      transition: opacity 0.5s;
+    }
+
+    .photo-meta {
+      position: absolute; bottom: 0; left: 0; right: 0; z-index: 4;
+      padding: 1.5rem 1.2rem 1.2rem;
+      background: linear-gradient(to top, rgba(8,12,24,0.85) 0%, transparent 100%);
+      transform: translateY(100%);
+      transition: transform 0.45s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+    .photo-meta .loc {
+      font-size: 0.52rem; letter-spacing: 0.25em; text-transform: uppercase;
+      color: var(--warm);
+    }
+    .photo-meta .caption {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.05rem; font-style: italic; font-weight: 300;
+      color: var(--cream); margin-top: 0.25rem;
+    }
+
+    .photo-card:hover img {
+      transform: scale(1.07);
+      filter: saturate(1.1) brightness(1.0);
+    }
+    .photo-card:hover .photo-meta { transform: translateY(0); }
+    .photo-card:hover::after { opacity: 0.4; }
+
+    .photo-card .light-leak {
+      position: absolute; inset: 0; z-index: 3; pointer-events: none;
+      background: radial-gradient(ellipse at 10% 10%, rgba(255,200,100,0.18) 0%, transparent 50%);
+      opacity: 0; transition: opacity 0.5s;
+    }
+    .photo-card:hover .light-leak { opacity: 1; }
+
+    #lightbox {
+      position: fixed; inset: 0; z-index: 9000;
+      background: rgba(4,7,16,0.97);
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.4s;
+    }
+    #lightbox.open { opacity: 1; pointer-events: all; }
+    #lightbox img {
+      max-width: 88vw; max-height: 88vh;
+      object-fit: contain;
+      border-radius: 2px;
+      box-shadow: 0 0 120px rgba(201,168,124,0.12);
+      transform: scale(0.94);
+      transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+    #lightbox.open img { transform: scale(1); }
+    #lb-close {
+      position: absolute; top: 2rem; right: 2.5rem;
+      font-size: 0.6rem; letter-spacing: 0.25em; text-transform: uppercase;
+      color: var(--muted); cursor: pointer; border: none; background: none;
+      font-family: 'Space Mono', monospace;
+      transition: color 0.2s;
+    }
+    #lb-close:hover { color: var(--warm); }
+    #lb-meta {
+      position: absolute; bottom: 2.5rem; left: 50%; transform: translateX(-50%);
+      text-align: center; white-space: nowrap;
+    }
+    #lb-meta .loc { font-size: 0.52rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--warm); }
+    #lb-meta .cap { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 1rem; color: var(--cream); margin-top: 0.3rem; }
+    #lb-prev, #lb-next {
+      position: absolute; top: 50%; transform: translateY(-50%);
+      background: none; border: none; cursor: pointer;
+      color: var(--muted); font-size: 0.55rem; letter-spacing: 0.2em; text-transform: uppercase;
+      padding: 1rem; transition: color 0.2s;
+      font-family: 'Space Mono', monospace;
+    }
+    #lb-prev:hover, #lb-next:hover { color: var(--warm); }
+    #lb-prev { left: 2rem; }
+    #lb-next { right: 2rem; }
+
+    #about { background: var(--navy); }
+    .about-inner { max-width: 680px; }
+    .about-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2.2rem, 4vw, 3.4rem);
+      font-weight: 300; line-height: 1.15; margin-bottom: 2rem;
+    }
+    .about-title em { font-style: italic; color: var(--warm); }
+    .about-body {
+      font-size: 0.65rem; line-height: 2.2; color: var(--muted);
+      letter-spacing: 0.04em;
+    }
+    .about-body p + p { margin-top: 1.2rem; }
+
+    .roll-list {
+      margin-top: 3rem; display: flex; flex-direction: column; gap: 1.2rem;
+    }
+    .roll-item {
+      display: flex; align-items: baseline; gap: 1.5rem;
+      font-size: 0.58rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted);
+      padding-bottom: 1.2rem; border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .roll-item .num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.4rem; font-weight: 300; color: rgba(201,168,124,0.3);
+      line-height: 1;
+    }
+
+    footer {
+      padding: 3rem; border-top: 1px solid rgba(255,255,255,0.06);
+      display: flex; justify-content: space-between; align-items: center;
+      font-size: 0.52rem; letter-spacing: 0.2em; text-transform: uppercase;
+      color: rgba(138,143,168,0.45);
+      font-family: 'Space Mono', monospace;
+    }
+
+    @media (max-width: 900px) {
+      nav { padding: 1.2rem 1.5rem; }
+      .nav-links { display: none; }
+      #home, section { padding-left: 1.5rem; padding-right: 1.5rem; }
+      .grid {
+        grid-template-columns: 1fr 1fr;
+        grid-auto-rows: 200px;
+      }
+      .g1,.g2,.g3,.g4,.g5,.g6,.g7,.g8 {
+        grid-column: auto; grid-row: auto;
+      }
+      footer { flex-direction: column; gap: 1rem; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="#home">35mm ✦</a>
+  <ul class="nav-links">
+    <li><a href="#gallery">Gallery</a></li>
+    <li><a href="#about">About</a></li>
+  </ul>
+</nav>
+
+<section id="home">
+  <div class="film-badge">
+    <strong>08</strong>
+    frames
+  </div>
+
+  <p class="hero-eyebrow">Shot on disposable film &nbsp;·&nbsp; 2024</p>
+  <h1 class="hero-title">Somewhere<br>between<br><em>frames.</em></h1>
+  <p class="hero-sub">Brisbane &nbsp;·&nbsp; Gold Coast &nbsp;·&nbsp; Sydney &nbsp;·&nbsp; Sea World<br>Kodak 800 · Two rolls · One trip</p>
+
+  <div class="hero-scroll">
+    <div class="hero-scroll-line"></div>
+    scroll
+  </div>
+</section>
+
+<section id="gallery">
+  <p class="section-label">Roll 01 &amp; 02</p>
+
+  <div class="grid">
+
+    <div class="photo-card g1"
+     data-loc="Great Ocean Road, VIC"
+     data-cap="The Twelve Apostles at golden hour">
+  <img src="00002034-R1-17-20A.jpg"
+       alt="Twelve Apostles on film"
+       loading="lazy" />
+  <div class="light-leak"></div>
+  <div class="photo-meta">
+    <div class="loc">Great Ocean Road, VIC</div>
+    <div class="caption">The Twelve Apostles at golden hour</div>
+  </div>
+</div>
+    
+
+    <div class="photo-card g2" data-loc="Gold Coast, QLD" data-cap="Danger flag, Surfers Paradise">
+      <img src="Samrat0998-R1-10-15A.JPG" alt="Gold Coast beach" loading="lazy" />
+      <div class="light-leak"></div>
+      <div class="photo-meta">
+        <div class="loc">Gold Coast, QLD</div>
+        <div class="caption">Main Beach, Surfers Paradise</div>
+      </div>
+    </div>
+
+    <div class="photo-card g3" data-loc="Sea World, Gold Coast" data-cap="Dolphins at Dolphin Beach show">
+      <img src="Samrat0998-R1-07-18A.JPG" alt="Sea World dolphins" loading="lazy" />
+      <div class="light-leak"></div>
+      <div class="photo-meta">
+        <div class="loc">Sea World, Gold Coast</div>
+        <div class="caption">Dolphins at Dolphin Beach show</div>
+      </div>
+    </div>
+
+    <div class="photo-card g4" data-loc="Sea World, Gold Coast" data-cap="Dolphin Beach entrance arch">
+      <img src="Samrat0998-R1-05-20A.JPG" alt="Dolphin Beach sign" loading="lazy" />
+      <div class="light-leak"></div>
+      <div class="photo-meta">
+        <div class="loc">Sea World, Gold Coast</div>
+        <div class="caption">Dolphin Beach entrance arch</div>
+      </div>
+    </div>
+
+    <div class="photo-card g5" data-loc="Gold Coast, QLD" data-cap="Driving past the theme parks at dusk">
+      <img src="Samrat0998-R1-18-7A.JPG" alt="Car window Gold Coast" loading="lazy" />
+      <div class="light-leak"></div>
+      <div class="photo-meta">
+        <div class="loc">Gold Coast, QLD</div>
+        <div class="caption">Driving past the theme parks at dusk</div>
+      </div>
+    </div>
+
+    <div class="photo-card g6" data-loc="SCG, Sydney NSW" data-cap="Cricket at dusk, the SCG">
+      <img src="00002034-R1-00-37A.JPG" alt="SCG cricket sunset" loading="lazy" />
+      <div class="light-leak"></div>
+      <div class="photo-meta">
+        <div class="loc">SCG, Sydney NSW</div>
+        <div class="caption">Cricket at dusk, the SCG</div>
+      </div>
+    </div>
+
+    <div class="photo-card g7" data-loc="NSW / VIC coast" data-cap="Rolling hills, turquoise shore">
+      <img src="00002034-R1-14-23A.JPG" alt="Coastal beach hills" loading="lazy" />
+      <div class="light-leak"></div>
+      <div class="photo-meta">
+        <div class="loc">NSW / VIC coast</div>
+        <div class="caption">Rolling hills, turquoise shore</div>
+      </div>
+    </div>
+
+    <div class="photo-card g8" data-loc="Brisbane, QLD" data-cap="Golden hour through the apartment window">
+      <img src="00002034-R1-28-9A.JPG" alt="Apartment sunset Brisbane" loading="lazy" />
+      <div class="light-leak"></div>
+      <div class="photo-meta">
+        <div class="loc">Melbourne, VIC</div>
+        <div class="caption">Golden hour through the apartment window</div>
+      </div>
+    </div>
+
+    <div class="photo-card g9"
+     data-loc="Pool Hall"
+     data-cap="Late night game under neon lights">
+  <img src="00002034-R1-02-35A.jpg"
+       alt="Pool hall on film"
+       loading="lazy" />
+  <div class="light-leak"></div>
+  <div class="photo-meta">
+    <div class="loc">Pool Hall</div>
+    <div class="caption">Late night game under neon lights</div>
+  </div>
+</div>
+
+<div class="photo-card g10"
+     data-loc="Morning Walk"
+     data-cap="Walking through the beachside neighbourhood">
+  <img src="00002034-R1-13-24A.jpg"
+       alt="Beach houses on film"
+       loading="lazy" />
+  <div class="light-leak"></div>
+  <div class="photo-meta">
+    <div class="loc">Morning Walk</div>
+    <div class="caption">Walking through the beachside neighbourhood</div>
+  </div>
+</div>
+
+
+<div class="photo-card g11" data-loc="Brisbane, QLD" data-cap="Rooftop city view, late afternoon">
+      <img src="Samrat0998-R1-01-24A.JPG" alt="Brisbane cityscape" loading="lazy" />
+      <div class="light-leak"></div>
+      <div class="photo-meta">
+        <div class="loc">Brisbane, QLD</div>
+        <div class="caption">Rooftop city view, late afternoon</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<section id="about">
+  <p class="section-label">About the rolls</p>
+  <div class="about-inner">
+    <h2 class="about-title">Disposable,<br>not <em>forgettable.</em></h2>
+    <div class="about-body">
+      <p>Two rolls of film loaded into a cheap disposable camera. No manual settings, no RAW files — just pressing the shutter and hoping the light cooperated.</p>
+      <p>These frames were taken across Brisbane, the Gold Coast, and Sydney over a single trip. The grain isn't a filter. It's the film.</p>
+    </div>
+
+    <div class="roll-list">
+      <div class="roll-item"><span class="num">01</span> Roll one — Brisbane &amp; Gold Coast · Samrat0998</div>
+      <div class="roll-item"><span class="num">02</span> Roll two — Sydney SCG &amp; coastal NSW · 00002034</div>
+      <div class="roll-item"><span class="num">11</span> Frames selected from 36 exposures</div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <span>© 2024 — Shot on disposable film</span>
+  <span>Brisbane · Gold Coast · Sydney · Melbourne</span>
+</footer>
+
+<div id="lightbox">
+  <button id="lb-close">✕ &nbsp; Close</button>
+  <button id="lb-prev">← Prev</button>
+  <img id="lb-img" src="" alt="" />
+  <button id="lb-next">Next →</button>
+  <div id="lb-meta">
+    <div class="loc" id="lb-loc"></div>
+    <div class="cap" id="lb-cap"></div>
+  </div>
+</div>
+
+<script>
+  const cards = Array.from(document.querySelectorAll('.photo-card'));
+  const lb    = document.getElementById('lightbox');
+  const lbImg = document.getElementById('lb-img');
+  const lbLoc = document.getElementById('lb-loc');
+  const lbCap = document.getElementById('lb-cap');
+  let current = 0;
+
+  function openLightbox(idx) {
+    current = idx;
+    const card = cards[idx];
+    lbImg.src = card.querySelector('img').src;
+    lbLoc.textContent = card.dataset.loc;
+    lbCap.textContent = card.dataset.cap;
+    lb.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeLightbox() {
+    lb.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  cards.forEach((card, i) => card.addEventListener('click', () => openLightbox(i)));
+  document.getElementById('lb-close').addEventListener('click', closeLightbox);
+  lb.addEventListener('click', e => { if (e.target === lb) closeLightbox(); });
+
+  document.getElementById('lb-prev').addEventListener('click', e => {
+    e.stopPropagation();
+    openLightbox((current - 1 + cards.length) % cards.length);
+  });
+  document.getElementById('lb-next').addEventListener('click', e => {
+    e.stopPropagation();
+    openLightbox((current + 1) % cards.length);
+  });
+  document.addEventListener('keydown', e => {
+    if (!lb.classList.contains('open')) return;
+    if (e.key === 'Escape') closeLightbox();
+    if (e.key === 'ArrowLeft')  openLightbox((current - 1 + cards.length) % cards.length);
+    if (e.key === 'ArrowRight') openLightbox((current + 1) % cards.length);
+  });
+</script>
+
+</body>
+</html>
