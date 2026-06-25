@@ -37,16 +37,20 @@
        FILM INTRO
     ══════════════════════════════════════ */
     #film-intro {
-      position: fixed; inset: 0; z-index: 99999;
-      background: #000;
-      display: flex; flex-direction: column;
-      align-items: center; justify-content: center;
-      overflow: hidden;
-      transition: clip-path 0.9s cubic-bezier(0.77,0,0.18,1);
-    }
-    #film-intro.iris-close {
-      clip-path: circle(0% at 50% 50%);
-    }
+  position: fixed; inset: 0; z-index: 99999;
+  background: #000;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  overflow: hidden;
+
+  transform: translateY(0);
+  transition: transform 1.2s cubic-bezier(0.77,0,0.18,1);
+  will-change: transform;
+}
+
+#film-intro.move-up {
+  transform: translateY(-100%);
+}
 
     /* animated grain on intro */
     #film-intro::before {
@@ -805,16 +809,17 @@
     flash.classList.add('pop');
     await t(120);
 
-    // Phase 7: iris close
-    await t(200);
-    intro.style.transition = 'clip-path 0.85s cubic-bezier(0.77,0,0.18,1)';
-    intro.style.clipPath = 'circle(0% at 50% 50%)';
+    // Phase 6: hold intro on screen after title is shown
+await t(1200);
 
-    // Phase 8: remove
-    await t(950);
-    intro.remove();
-    flash.remove();
-    document.body.style.overflow = '';
+// Phase 7: move the whole intro screen upward
+intro.classList.add('move-up');
+
+// Phase 8: remove intro after it has moved up
+await t(1250);
+intro.remove();
+flash.remove();
+document.body.style.overflow = '';
   }
 
   run();
